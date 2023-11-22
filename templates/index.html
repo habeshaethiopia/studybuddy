@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Upload Example</title>
+  <!--  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> -->
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+  margin-top: 20px;
+}
+
+input[type="file"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+</style>
+<body>
+  <h1>File Upload Example</h1>
+  <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+   
+<input type="file" name="file" id="file">
+    
+<br>
+    <input type="submit" value="Upload">
+  </form>
+
+  <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+</body>
+</html>

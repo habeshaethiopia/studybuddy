@@ -16,7 +16,7 @@ import constants
 os.environ["OPENAI_API_KEY"] = constants.APIKEY
 
 # Enable to save to disk & reuse the model (for repeated queries on the same data)
-PERSIST = False
+PERSIST = True
 
 query = None
 if len(sys.argv) > 1:
@@ -28,8 +28,8 @@ def chat(query = None):
     index = VectorStoreIndexWrapper(vectorstore=vectorstore)
   else:
     # loader = UnstructuredPDFLoader("data/cat.pdf") # Use this line if you only need data.txt
-    # loader = TextLoader("data/cat.pdf") # Use this line if you only need data.txt
-    loader = DirectoryLoader("data/")
+    loader = UnstructuredPDFLoader("static/data/Uolo_Base_Guidelines_V.5_and_V.6_Basic_Labeling.pdf") # Use this line if you only need data.txt
+    #loader = DirectoryLoader("static/data/")
     if PERSIST:
       index = VectorstoreIndexCreator(vectorstore_kwargs={"persist_directory":"persist"}).from_loaders([loader])
     else:
