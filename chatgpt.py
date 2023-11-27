@@ -28,8 +28,8 @@ def chat(query = None):
     index = VectorStoreIndexWrapper(vectorstore=vectorstore)
   else:
     # loader = UnstructuredPDFLoader("data/cat.pdf") # Use this line if you only need data.txt
-    loader = UnstructuredPDFLoader("static/data/Uolo_Base_Guidelines_V.5_and_V.6_Basic_Labeling.pdf") # Use this line if you only need data.txt
-    #loader = DirectoryLoader("static/data/")
+    #loader = UnstructuredPDFLoader("static/data/Uolo_Base_Guidelines_V.5_and_V.6_Basic_Labeling.pdf") # Use this line if you only need data.txt
+    loader = DirectoryLoader("static/data/")
     if PERSIST:
       index = VectorstoreIndexCreator(vectorstore_kwargs={"persist_directory":"persist"}).from_loaders([loader])
     else:
@@ -46,11 +46,11 @@ def chat(query = None):
       query = input("Prompt: ")
     if query in ['quit', 'q', 'exit']:
       sys.exit()
-    # result = chain({"question": query, "chat_history": chat_history})
-    result = index.query(query)
-    # print(result['answer'])
-    print(result)
-    # chat_history.append((query, result['answer']))
+    result = chain({"question": query, "chat_history": chat_history})
+    # result = index.query(query)
+    print(result['answer'])
+    # print(result)
+    chat_history.append((query, result['answer']))
     query = None
 if __name__=="__main__":
     chat(query)
