@@ -47,7 +47,7 @@ oauth.register(
 )
 # app.py
 
-os.environ["OPENAI_API_KEY"] = constants.APIKEY
+env["OPENAI_API_KEY"] = str(env.get("APIKEY"))
 UPLOAD_FOLDER = "static/data"
 ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 

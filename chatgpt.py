@@ -10,10 +10,15 @@ from langchain.indexes import VectorstoreIndexCreator
 from langchain.indexes.vectorstore import VectorStoreIndexWrapper
 from langchain.llms import OpenAI
 from langchain.vectorstores import Chroma
-
+from os import environ as env 
 import constants
+from dotenv import load_dotenv
 
-os.environ["OPENAI_API_KEY"] = constants.APIKEY
+load_dotenv()
+env["OPENAI_API_KEY"] = str(env.get("APIKEY"))
+
+
+print(env["OPENAI_API_KEY"])
 
 # Enable to save to disk & reuse the model (for repeated queries on the same data)
 PERSIST = True
@@ -27,9 +32,9 @@ def chat(query = None):
     vectorstore = Chroma(persist_directory="persist", embedding_function=OpenAIEmbeddings())
     index = VectorStoreIndexWrapper(vectorstore=vectorstore)
   else:
-    # loader = UnstructuredPDFLoader("data/cat.pdf") # Use this line if you only need data.txt
+    loader = UnstructuredPDFLoader("data/cat.pdf") # Use this line if you only need data.txt
     #loader = UnstructuredPDFLoader("static/data/Uolo_Base_Guidelines_V.5_and_V.6_Basic_Labeling.pdf") # Use this line if you only need data.txt
-    loader = DirectoryLoader("static/data/")
+    # loader = DirectoryLoader("static/data/")
     if PERSIST:
       index = VectorstoreIndexCreator(vectorstore_kwargs={"persist_directory":"persist"}).from_loaders([loader])
     else:
