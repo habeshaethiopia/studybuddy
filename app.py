@@ -17,7 +17,7 @@ from langchain.indexes.vectorstore import VectorStoreIndexWrapper
 from langchain.llms import OpenAI
 from langchain.vectorstores import Chroma
 from functools import lru_cache
-import constants
+
 import json
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
