@@ -5,3 +5,8 @@ persist/
 .chroma/
 myGpt
 constants.py
+.env
+.pyc
+*.iml
+.directory
+.idea
