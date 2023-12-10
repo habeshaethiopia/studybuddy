@@ -55,7 +55,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 """Enable to save to disk & reuse the model
 (for repeated queries on the same data)"""
-PERSIST = True
+PERSIST = False
 
 
 def allowed_file(filename):
