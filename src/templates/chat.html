@@ -59,8 +59,8 @@
 
 <body>
     <div id="pdf-container">
-        <embed src="{{ url_for('static', filename=filename) }}#toolbar=0" style="border: none;" type="application/pdf"
-            width="100%" height="100%" />
+        <embed src="{{ url_for('static', filename=filename) }}#toolbar=0&view=FitH" style="border: none;"
+            type="application/pdf" width="100%" height="100%" />
     </div>
 
     <div id="chat-container">
@@ -83,7 +83,7 @@
             const chatMessages = document.getElementById('chat-messages');
             let filename = "{{filename}}";
             filename = filename.split("/")[1]
-        
+
             chatForm.addEventListener('submit', function (event) {
                 event.preventDefault();
                 const message = chatInput.value;
@@ -91,27 +91,27 @@
                 displayMessage('user-message', message);
                 const formData = new FormData();
                 formData.append('message', message);
-        
+
                 fetch(`/chat/${filename}`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    displayMessage('bot-message', data.answer);
-                });
-        
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        displayMessage('bot-message', data.answer);
+                    });
+
                 function displayMessage(className, text) {
                     const messageDiv = document.createElement('div');
                     messageDiv.className = 'message ' + className;
-                    messageDiv.textContent = text;
+                    messageDiv.innerHTML = text;
                     chatMessages.appendChild(messageDiv);
                 }
                 chatInput.value = '';
-                return false; 
+                return false;
             });
         });
-        </script>
+    </script>
 </body>
 
 </html>

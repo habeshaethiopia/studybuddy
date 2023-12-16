@@ -3,7 +3,7 @@ from flask import Flask, render_template, url_for, redirect, request, jsonify
 from flask import Flask, request, jsonify, session
 from werkzeug.utils import secure_filename
 import os
-
+import markdown2
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain, RetrievalQA
 from langchain.document_loaders import (
@@ -48,7 +48,9 @@ oauth.register(
 # app.py
 
 env["OPENAI_API_KEY"] = str(env.get("APIKEY"))
-UPLOAD_FOLDER = "static/data"
+# UPLOAD_FOLDER = "static/data"
+UPLOAD_FOLDER = 'src/static/data'
+print('UPLOAD_FOLDER :',UPLOAD_FOLDER)
 ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -64,7 +66,7 @@ def allowed_file(filename):
 
 @lru_cache(maxsize=None)
 def initialize_chat_chain(fname):
-    loader = UnstructuredPDFLoader("static/" + fname)
+    loader = UnstructuredPDFLoader("src/static/" + fname)
     if PERSIST and os.path.exists("persist"):
         print("Reusing index...\n")
         vectorstore = Chroma(
@@ -92,7 +94,7 @@ def home2():
 
 @app.route("/chat/<filename>", methods=["GET", "POST"])
 def chat(filename):
-    filename = UPLOAD_FOLDER.replace("static/", "") + "/" + filename
+    filename = UPLOAD_FOLDER.replace("src/static/", "") + "/" + filename
 
     chain = initialize_chat_chain(filename)
     if request.method == "POST":
@@ -101,7 +103,7 @@ def chat(filename):
         chat_history = session.get("chat_history", [])
         # Store the updated chat history in the session
         result = chain({"question": message, "chat_history": chat_history})
-        answer = result["answer"]
+        answer = markdown2.markdown(result["answer"])
         chat_history.append((message, answer))
         session["chat_history"] = chat_history
 
@@ -123,7 +125,16 @@ def upload_file():
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            filePath=os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+                os.makedirs(app.config["UPLOAD_FOLDER"])
+            print("File path: ", filePath)
+            try:
+                file.save(filePath)
+                print("reached")
+            except Exception as e:
+                print(e)
+            print ("successfull uplode")
             return redirect(url_for("chat", filename=filename))
         else:
             return jsonify({"error": "Invalid file"})
@@ -173,4 +184,7 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=env.get("PORT", 3000), debug=True)
+    app.run(host="0.0.0.0", port=env.get("PORT", 3001), debug=True)
+#ask: I have issue with file path after uploded help me?
+    
+    
