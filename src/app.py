@@ -49,8 +49,8 @@ oauth.register(
 
 env["OPENAI_API_KEY"] = str(env.get("APIKEY"))
 # UPLOAD_FOLDER = "static/data"
-UPLOAD_FOLDER = 'src/static/data'
-print('UPLOAD_FOLDER :',UPLOAD_FOLDER)
+UPLOAD_FOLDER = "src/static/data"
+print("UPLOAD_FOLDER :", UPLOAD_FOLDER)
 ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -125,7 +125,7 @@ def upload_file():
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            filePath=os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            filePath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             if not os.path.exists(app.config["UPLOAD_FOLDER"]):
                 os.makedirs(app.config["UPLOAD_FOLDER"])
             print("File path: ", filePath)
@@ -134,7 +134,7 @@ def upload_file():
                 print("reached")
             except Exception as e:
                 print(e)
-            print ("successfull uplode")
+            print("successfull uplode")
             return redirect(url_for("chat", filename=filename))
         else:
             return jsonify({"error": "Invalid file"})
@@ -185,6 +185,3 @@ def logout():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=env.get("PORT", 3001), debug=True)
-#ask: I have issue with file path after uploded help me?
-    
-    
